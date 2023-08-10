@@ -10,10 +10,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,7 +32,7 @@ fun BirdAppTheme(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colors = MaterialTheme.colors.copy(primary = Color.Black),
+        colorScheme = MaterialTheme.colorScheme.copy(primary = Color.Black),
         shapes = MaterialTheme.shapes.copy(
             small = AbsoluteCutCornerShape(0.dp),
             medium = AbsoluteCutCornerShape(0.dp),
@@ -70,10 +69,7 @@ fun BirdsPage(viewModel: BirdsViewModel) {
                         viewModel.selectCategory(category)
                     },
                     modifier = Modifier.aspectRatio(1.0f).fillMaxSize().weight(1.0f),
-                    elevation = ButtonDefaults.elevation(
-                        defaultElevation = 0.dp,
-                        focusedElevation = 0.dp,
-                    ),
+                    shape = AbsoluteCutCornerShape(0.dp),
                 ) {
                     Text(category)
                 }

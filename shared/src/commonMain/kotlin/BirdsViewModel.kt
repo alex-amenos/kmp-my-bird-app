@@ -12,14 +12,14 @@ import model.BirdImage
 
 data class BirdsUiState(
     val images: List<BirdImage> = emptyList(),
-    val selectedCategory: String? = null
+    val selectedCategory: String? = null,
 ) {
     val categories = images.map { it.category }.toSet()
     val selectedImages = images.filter { it.category == selectedCategory }
 }
 
 class BirdsViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow<BirdsUiState>(BirdsUiState())
+    private val _uiState = MutableStateFlow(BirdsUiState())
     val uiState = _uiState.asStateFlow()
 
     private val httpClient = HttpClient {
@@ -51,10 +51,12 @@ class BirdsViewModel : ViewModel() {
         }
     }
 
-    private suspend fun getImages(): List<BirdImage> {
-        val images = httpClient
-            .get("https://sebastianaigner.github.io/demo-image-api/pictures.json")
-            .body<List<BirdImage>>()
-        return images
+    private suspend fun getImages(): List<BirdImage> =
+        httpClient
+            .get(JSON_URL)
+            .body()
+
+    companion object {
+        private const val JSON_URL = "https://sebi.io/demo-image-api/pictures.json"
     }
 }

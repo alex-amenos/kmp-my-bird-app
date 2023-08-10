@@ -30,15 +30,15 @@ import model.BirdImage
 
 @Composable
 fun BirdAppTheme(
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colors = MaterialTheme.colors.copy(primary = Color.Black),
         shapes = MaterialTheme.shapes.copy(
             small = AbsoluteCutCornerShape(0.dp),
             medium = AbsoluteCutCornerShape(0.dp),
-            large = AbsoluteCutCornerShape(0.dp)
-        )
+            large = AbsoluteCutCornerShape(0.dp),
+        ),
     ) {
         content()
     }
@@ -58,12 +58,11 @@ fun BirdsPage(viewModel: BirdsViewModel) {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
-
         Row(
             Modifier.fillMaxWidth().padding(5.dp),
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             for (category in uiState.categories) {
                 Button(
@@ -73,10 +72,9 @@ fun BirdsPage(viewModel: BirdsViewModel) {
                     modifier = Modifier.aspectRatio(1.0f).fillMaxSize().weight(1.0f),
                     elevation = ButtonDefaults.elevation(
                         defaultElevation = 0.dp,
-                        focusedElevation = 0.dp
-                    )
-                )
-                {
+                        focusedElevation = 0.dp,
+                    ),
+                ) {
                     Text(category)
                 }
             }
@@ -91,7 +89,7 @@ fun BirdsPage(viewModel: BirdsViewModel) {
                     items(uiState.selectedImages) {
                         BirdImageCell(it)
                     }
-                }
+                },
             )
         }
     }
@@ -100,12 +98,11 @@ fun BirdsPage(viewModel: BirdsViewModel) {
 @Composable
 fun BirdImageCell(image: BirdImage) {
     KamelImage(
-        asyncPainterResource("https://sebastianaigner.github.io/demo-image-api/${image.path}"),
-        "${image.category} by ${image.author}",
+        asyncPainterResource(image.url),
+        image.contentDescription,
         contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxWidth().aspectRatio(1.0f)
+        modifier = Modifier.fillMaxWidth().aspectRatio(1.0f),
     )
 }
-
 
 expect fun getPlatformName(): String

@@ -1,3 +1,6 @@
+package com.myapplication.common.birds.ui.viewmodel
+
+import com.myapplication.common.birds.ui.composable.BirdImage
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -8,14 +11,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import model.BirdImage
 
 data class BirdsUiState(
     val images: List<BirdImage> = emptyList(),
     val selectedCategory: String? = null,
 ) {
-    val categories = images.map { it.category }.toSet()
-    val selectedImages = images.filter { it.category == selectedCategory }
+    val categories: Set<String> = images.map { it.category }.toSet()
+    val selectedImages: List<BirdImage> = images.filter { it.category == selectedCategory }
 }
 
 class BirdsViewModel : ViewModel() {
@@ -42,7 +44,7 @@ class BirdsViewModel : ViewModel() {
         }
     }
 
-    fun updateImages() {
+    private fun updateImages() {
         viewModelScope.launch {
             val images = getImages()
             _uiState.update {

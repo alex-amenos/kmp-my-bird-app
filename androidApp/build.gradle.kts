@@ -36,3 +36,7 @@ android {
         jvmToolchain(11)
     }
 }
+
+dependencies {
+    implementation(libs.napier)
+}

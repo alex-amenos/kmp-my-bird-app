@@ -1,9 +1,9 @@
-package com.myapplication
+package com.myapplication.main
 
-import com.myapplication.common.birds.ui.composable.MainView
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import com.myapplication.common.birds.ui.composable.MainView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

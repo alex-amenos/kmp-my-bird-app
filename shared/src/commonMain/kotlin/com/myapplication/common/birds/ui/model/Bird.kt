@@ -1,9 +1,9 @@
-package com.myapplication.common.birds.ui.composable
+package com.myapplication.common.birds.ui.model
 
-import kotlinx.serialization.Serializable
+import com.myapplication.common.core.BY
+import com.myapplication.common.core.WHITE_SPACE
 
-@Serializable
-data class BirdImage(
+data class Bird(
     val author: String,
     val category: String,
     val path: String,
@@ -22,7 +22,5 @@ data class BirdImage(
 
     companion object {
         const val BASE_URL = "https://sebi.io/demo-image-api/"
-        const val WHITE_SPACE = " "
-        const val BY = "by"
     }
 }

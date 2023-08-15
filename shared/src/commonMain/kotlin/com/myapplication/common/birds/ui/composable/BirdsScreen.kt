@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.myapplication.common.birds.ui.model.Bird
 import com.myapplication.common.birds.ui.viewmodel.BirdsUiState
 import com.myapplication.common.birds.ui.viewmodel.BirdsViewModel
 import com.myapplication.common.core.ui.theme.AppTheme
@@ -32,18 +33,36 @@ import io.kamel.image.asyncPainterResource
 @Composable
 fun BirdsScreen() {
     AppTheme {
-        val birdsViewModel = getViewModel(Unit, viewModelFactory { BirdsViewModel() })
-        val birdsUiState by birdsViewModel.uiState.collectAsState()
-        BirdsContent(
-            uiState = birdsUiState,
-            onSelectBirdCategory = { category -> birdsViewModel.selectCategory(category) },
+        val birdsViewModel = getViewModel(
+            key = Unit,
+            viewModelFactory { BirdsViewModel() },
         )
+        val birdsUiState by birdsViewModel.uiState.collectAsState()
+        when (val uiState = birdsUiState) {
+            BirdsUiState.Loading -> BirdsMessage("Loading...")
+            BirdsUiState.Failure -> BirdsMessage("Failure")
+            is BirdsUiState.Success -> BirdsContent(
+                uiState = uiState,
+                onSelectBirdCategory = { category -> birdsViewModel.selectCategory(category) },
+            )
+        }
+    }
+}
+
+@Composable
+fun BirdsMessage(message: String) {
+    Column(
+        Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(message)
     }
 }
 
 @Composable
 fun BirdsContent(
-    uiState: BirdsUiState,
+    uiState: BirdsUiState.Success,
     onSelectBirdCategory: (String) -> Unit = {},
 ) {
     Column(
@@ -82,7 +101,7 @@ fun BirdsContent(
 }
 
 @Composable
-fun BirdImageCell(image: BirdImage) {
+fun BirdImageCell(image: Bird) {
     KamelImage(
         asyncPainterResource(image.url),
         image.contentDescription,

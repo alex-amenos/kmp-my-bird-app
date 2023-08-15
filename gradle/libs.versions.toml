@@ -1,0 +1,9 @@
+[versions]
+arrow = "1.2.0"
+arrow-integrations = "0.14.1"
+napier = "2.6.1"
+
+[libraries]
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }

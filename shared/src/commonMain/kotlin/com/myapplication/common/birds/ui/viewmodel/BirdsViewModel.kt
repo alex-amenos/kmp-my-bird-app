@@ -1,64 +1,75 @@
 package com.myapplication.common.birds.ui.viewmodel
 
-import com.myapplication.common.birds.ui.composable.BirdImage
+import arrow.core.Either
+import com.myapplication.common.birds.datasource.model.BirdsError
+import com.myapplication.common.birds.datasource.repository.BirdsRepository
+import com.myapplication.common.birds.datasource.repository.BirdsRepositoryImpl
+import com.myapplication.common.birds.ui.model.Bird
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.get
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-data class BirdsUiState(
-    val images: List<BirdImage> = emptyList(),
-    val selectedCategory: String? = null,
-) {
-    val categories: Set<String> = images.map { it.category }.toSet()
-    val selectedImages: List<BirdImage> = images.filter { it.category == selectedCategory }
+sealed interface BirdsUiState {
+    object Loading : BirdsUiState
+    object Failure : BirdsUiState
+    data class Success(
+        val images: List<Bird>,
+        val selectedCategory: String?,
+    ) : BirdsUiState {
+        val categories: Set<String> = images.map { it.category }.toSet()
+        val selectedImages: List<Bird> = images.filter { it.category == selectedCategory }
+    }
+
+    companion object {
+        val initialState = Loading
+    }
 }
 
-class BirdsViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(BirdsUiState())
-    val uiState = _uiState.asStateFlow()
+class BirdsViewModel(
+    private val birdsRepository: BirdsRepository = BirdsRepositoryImpl(),
+    initialState: BirdsUiState = BirdsUiState.initialState,
+) : ViewModel() {
 
-    private val httpClient = HttpClient {
-        install(ContentNegotiation) {
-            json()
-        }
-    }
+    private val _uiState = MutableStateFlow(initialState)
+    val uiState = _uiState.asStateFlow()
+    private val currentState: BirdsUiState
+        get() = _uiState.value
 
     init {
         updateImages()
     }
 
-    override fun onCleared() {
-        httpClient.close()
+    private fun updateImages() {
+        viewModelScope.launch {
+            _uiState.update { BirdsUiState.Loading }
+            getImages().fold(
+                {
+                    _uiState.update {
+                        BirdsUiState.Failure
+                    }
+                },
+                { images ->
+                    _uiState.update {
+                        BirdsUiState.Success(
+                            images = images,
+                            selectedCategory = null,
+                        )
+                    }
+                },
+            )
+        }
     }
 
     fun selectCategory(category: String) {
         _uiState.update {
-            it.copy(selectedCategory = category)
-        }
-    }
-
-    private fun updateImages() {
-        viewModelScope.launch {
-            val images = getImages()
-            _uiState.update {
-                it.copy(images = images)
+            when (val uiState = currentState) {
+                is BirdsUiState.Success -> uiState.copy(selectedCategory = category)
+                else -> currentState
             }
         }
     }
 
-    private suspend fun getImages(): List<BirdImage> =
-        httpClient
-            .get(JSON_URL)
-            .body()
-
-    companion object {
-        private const val JSON_URL = "https://sebi.io/demo-image-api/pictures.json"
-    }
+    private suspend fun getImages(): Either<BirdsError, List<Bird>> = birdsRepository.getBirds()
 }

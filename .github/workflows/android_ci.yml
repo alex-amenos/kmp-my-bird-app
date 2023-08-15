@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop, main ]
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+
+  cancel_previous:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cancel Previous Workflow Runs
+        uses: n1hility/cancel-previous-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  quality_and_build_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK Zulu 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Check Ktlint
+        run: ./gradlew ktlintCheck
+
+      - name: Debug Unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Assemble Release
+        run: ./gradlew app:assembleRelease
+
+      - name: Sign Release APK
+        uses: ilharp/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ secrets.ALX_STORE_FILE }}
+          keyAlias: ${{ secrets.ALX_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ALX_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.ALX_KEY_PASSWORD }}
+          buildToolsVersion: "33.0.0"
+
+      # Example use of `signedReleaseFile` output -- not needed
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Signed Jetpack APK
+          path: ${{steps.sign_app.outputs.signedFile}}

@@ -39,19 +39,7 @@ jobs:
         run: ./gradlew testDebugUnitTest
 
       - name: Assemble Release
-        run: ./gradlew app:assembleRelease
-
-      - name: Sign Release APK
-        uses: ilharp/sign-android-release@v1
-        # ID used to access action output
-        id: sign_app
-        with:
-          releaseDir: app/build/outputs/apk/release
-          signingKey: ${{ secrets.ALX_STORE_FILE }}
-          keyAlias: ${{ secrets.ALX_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ALX_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.ALX_KEY_PASSWORD }}
-          buildToolsVersion: "33.0.0"
+        run: ./gradlew androidApp:assemble
 
       # Example use of `signedReleaseFile` output -- not needed
       - name: Upload Release APK

@@ -11,4 +11,3 @@ data class BirdImage(
     val url: String = "https://sebi.io/demo-image-api/$path"
     val contentDescription: String = "$category by $author"
 }
-

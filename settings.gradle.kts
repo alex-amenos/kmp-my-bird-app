@@ -1,8 +1,3 @@
-rootProject.name = "MyBirdsApp"
-
-include(":androidApp")
-include(":shared")
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -33,3 +28,8 @@ dependencyResolutionManagement {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
+
+rootProject.name = "MyBirdsApp"
+
+include(":androidApp")
+include(":shared")

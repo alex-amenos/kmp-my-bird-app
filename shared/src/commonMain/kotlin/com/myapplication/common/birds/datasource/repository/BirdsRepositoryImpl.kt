@@ -10,16 +10,15 @@ import com.myapplication.common.core.datasource.data.DataException
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 class BirdsRepositoryImpl(
     private val birdsRemoteDataSource: BirdsRemoteDataSource = BirdsRemoteDataSourceImpl(),
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : BirdsRepository {
 
     override suspend fun getBirds(): Either<BirdsError, List<Bird>> =
-        withContext(ioDispatcher) {
+        withContext(defaultDispatcher) {
             Either.catch {
                 birdsRemoteDataSource
                     .getBirdImages()

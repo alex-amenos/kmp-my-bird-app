@@ -1,9 +1,9 @@
-package com.myapplication.common.birds.ui.model
+package com.myapplication.common.birds.ui.contract.model
 
 import com.myapplication.common.core.BY
 import com.myapplication.common.core.WHITE_SPACE
 
-data class Bird(
+internal data class Bird(
     val author: String,
     val category: String,
     val path: String,

@@ -1,9 +1,9 @@
 package com.myapplication.common.birds.datasource.repository
 
 import arrow.core.Either
-import com.myapplication.common.birds.datasource.model.BirdsError
-import com.myapplication.common.birds.ui.model.Bird
+import com.myapplication.common.birds.datasource.model.GetBirdsError
+import com.myapplication.common.birds.ui.contract.model.Bird
 
-interface BirdsRepository {
-    suspend fun getBirds(): Either<BirdsError, List<Bird>>
+internal interface BirdsRepository {
+    suspend fun getBirds(): Either<GetBirdsError, List<Bird>>
 }

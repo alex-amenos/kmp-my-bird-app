@@ -21,8 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.myapplication.common.birds.ui.model.Bird
-import com.myapplication.common.birds.ui.viewmodel.BirdsUiState
+import com.myapplication.common.birds.ui.contract.BirdsUiState
+import com.myapplication.common.birds.ui.contract.model.Bird
 import com.myapplication.common.birds.ui.viewmodel.BirdsViewModel
 import com.myapplication.common.core.ui.theme.AppTheme
 import dev.icerock.moko.mvvm.compose.getViewModel
@@ -31,7 +31,7 @@ import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 
 @Composable
-fun BirdsScreen() {
+internal fun BirdsScreen() {
     AppTheme {
         val birdsViewModel = getViewModel(
             key = Unit,
@@ -50,7 +50,7 @@ fun BirdsScreen() {
 }
 
 @Composable
-fun BirdsMessage(message: String) {
+private fun BirdsMessage(message: String) {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,7 +61,7 @@ fun BirdsMessage(message: String) {
 }
 
 @Composable
-fun BirdsContent(
+private fun BirdsContent(
     uiState: BirdsUiState.Success,
     onSelectBirdCategory: (String) -> Unit = {},
 ) {
@@ -101,7 +101,7 @@ fun BirdsContent(
 }
 
 @Composable
-fun BirdImageCell(image: Bird) {
+private fun BirdImageCell(image: Bird) {
     KamelImage(
         asyncPainterResource(image.url),
         image.contentDescription,

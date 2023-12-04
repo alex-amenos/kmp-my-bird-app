@@ -60,6 +60,7 @@ kotlin {
             implementation(libs.moko.mvvm.core)
             implementation(libs.moko.mvvm.compose)
             implementation(libs.kamel)
+            implementation(libs.arrow.core)
         }
     }
 }

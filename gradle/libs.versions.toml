@@ -1,4 +1,5 @@
 [versions]
+app = "1.0.1"
 compose = "1.5.4"
 compose-plugin = "1.5.11"
 compose-compiler = "1.5.4"

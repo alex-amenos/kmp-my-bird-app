@@ -24,7 +24,10 @@ import androidx.compose.ui.unit.dp
 import birds.ui.contract.BirdsUiState
 import birds.ui.model.Bird
 import birds.ui.viewmodel.BirdsViewModel
-import core.ui.theme.BirdAppTheme
+import core.ui.composable.CoreErrorDialog
+import core.ui.composable.CoreLoadingDialog
+import core.ui.theme.AppTheme
+import core.ui.theme.extraSmallPadding
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 import io.kamel.image.KamelImage
@@ -41,8 +44,10 @@ internal fun BirdsScreen() {
         birdsViewModel.updateImages()
     }
     when (uiState) {
-        BirdsUiState.Loading -> BirdsMessage("Loading...")
-        BirdsUiState.Failure -> BirdsMessage("Failure")
+        BirdsUiState.Loading -> BirdsLoading()
+        BirdsUiState.Failure -> BirdsError(
+            onRetry = { birdsViewModel.updateImages() },
+        )
         is BirdsUiState.Success -> BirdsPage(
             uiState = uiState as BirdsUiState.Success,
             onSelectCategory = { category -> birdsViewModel.selectCategory(category) },
@@ -51,15 +56,27 @@ internal fun BirdsScreen() {
 }
 
 @Composable
-private fun BirdsMessage(message: String) {
-    BirdAppTheme {
-        Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(message)
-        }
+private fun BirdsLoading() {
+    AppTheme {
+        CoreLoadingDialog(
+            isLoading = true,
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+private fun BirdsError(
+    onRetry: () -> Unit,
+) {
+    AppTheme {
+        CoreErrorDialog(
+            title = "Ups!",
+            errorMessage = "Error getting birds images. Please try again later.",
+            confirmationText = "Retry",
+            dismissError = onRetry,
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
@@ -68,7 +85,7 @@ private fun BirdsPage(
     uiState: BirdsUiState.Success,
     onSelectCategory: (String) -> Unit,
 ) {
-    BirdAppTheme {
+    AppTheme {
         Column(
             Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,7 +93,7 @@ private fun BirdsPage(
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
-                modifier = Modifier.fillMaxWidth().padding(5.dp),
+                modifier = Modifier.fillMaxWidth().padding(extraSmallPadding),
             ) {
                 for (category in uiState.categories) {
                     Button(
@@ -95,7 +112,7 @@ private fun BirdsPage(
                     verticalArrangement = Arrangement.spacedBy(5.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 5.dp),
+                        .padding(horizontal = extraSmallPadding),
                 ) {
                     items(
                         items = uiState.selectedImages,

@@ -1,4 +1,4 @@
-package main.ui.composable
+package app
 
 import androidx.compose.runtime.Composable
 import birds.ui.composable.BirdsScreen

@@ -1,3 +1,5 @@
+package birds.data.model
+
 import kotlinx.serialization.Serializable
 
 @Serializable

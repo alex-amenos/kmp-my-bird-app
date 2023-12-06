@@ -54,13 +54,14 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
+            implementation(libs.arrow.core)
+            implementation(libs.kamel)
+            implementation(libs.kermit)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.moko.mvvm.core)
             implementation(libs.moko.mvvm.compose)
-            implementation(libs.kamel)
-            implementation(libs.arrow.core)
         }
     }
 }

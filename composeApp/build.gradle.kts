@@ -25,7 +25,7 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = AppConfig.APP_NAME
+            baseName = AppConfig.SHARED_BINARY_NAME
             isStatic = true
         }
     }
@@ -38,6 +38,7 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.napier)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -46,7 +47,6 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            api(libs.kermit.simple)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -57,10 +57,10 @@ kotlin {
 
             implementation(libs.arrow.core)
             implementation(libs.kamel)
-            implementation(libs.kermit)
             implementation(libs.bundles.ktor.common)
             implementation(libs.moko.mvvm.core)
             implementation(libs.moko.mvvm.compose)
+            implementation(libs.napier)
         }
     }
 }
@@ -125,7 +125,7 @@ object AppConfig {
     private const val MINOR = 1
     private const val BUILD = 0
 
-    const val APP_NAME = "MyBirdKMPApp"
+    const val SHARED_BINARY_NAME = "SharedKmp"
     const val ANDROID_MIN_SDK: Int = 24
     const val ANDROID_COMPILE_SDK: Int = 34
     const val ANDROID_TARGET_SDK: Int = 34

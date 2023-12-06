@@ -1,6 +1,5 @@
 package infrastructure.core.data.datasource
 
-import io.ktor.client.plugins.logging.Logger as KtorLogger
 import io.github.aakira.napier.Napier.v
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.ClientRequestException
@@ -11,6 +10,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.statement.bodyAsText
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.client.plugins.logging.Logger as KtorLogger
 
 internal object KtorHttpClient {
 

@@ -46,6 +46,7 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            api(libs.kermit.simple)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -57,9 +58,7 @@ kotlin {
             implementation(libs.arrow.core)
             implementation(libs.kamel)
             implementation(libs.kermit)
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.bundles.ktor.common)
             implementation(libs.moko.mvvm.core)
             implementation(libs.moko.mvvm.compose)
         }

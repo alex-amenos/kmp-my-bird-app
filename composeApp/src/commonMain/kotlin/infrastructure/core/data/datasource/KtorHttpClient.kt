@@ -23,9 +23,7 @@ internal object KtorHttpClient {
         install(Logging) {
             logger = object : KtorLogger {
                 override fun log(message: String) {
-                    v(tag = "KtorHttpClient") {
-                        message
-                    }
+                    v(tag = "KtorHttpClient") { message }
                 }
             }
             level = LogLevel.ALL

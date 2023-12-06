@@ -25,7 +25,7 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = AppConfig.SHARED_BINARY_NAME
+            baseName = "SharedKmp"
             isStatic = true
         }
     }
@@ -67,7 +67,7 @@ kotlin {
 
 android {
     namespace = AppConfig.PACKAGE_NAME
-    compileSdk = AppConfig.ANDROID_COMPILE_SDK
+    compileSdk = 34
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
@@ -75,8 +75,8 @@ android {
 
     defaultConfig {
         applicationId = AppConfig.PACKAGE_NAME
-        minSdk = AppConfig.ANDROID_MIN_SDK
-        targetSdk = AppConfig.ANDROID_TARGET_SDK
+        minSdk = 24
+        targetSdk = 34
         versionCode = AppConfig.VERSION_BUILD_NUMBER
         versionName = AppConfig.VERSION_NAME
     }
@@ -125,10 +125,6 @@ object AppConfig {
     private const val MINOR = 1
     private const val BUILD = 0
 
-    const val SHARED_BINARY_NAME = "SharedKmp"
-    const val ANDROID_MIN_SDK: Int = 24
-    const val ANDROID_COMPILE_SDK: Int = 34
-    const val ANDROID_TARGET_SDK: Int = 34
     const val JVM_TARGET = "11"
     const val PACKAGE_NAME = "com.jetbrains.mybirdapp"
     const val VERSION_NAME = "$MAJOR.$MINOR.$BUILD"

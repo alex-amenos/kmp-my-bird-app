@@ -1,7 +1,7 @@
 package app
 
 import androidx.compose.runtime.Composable
-import birds.ui.composable.BirdsScreen
+import feature.birds.ui.composable.BirdsScreen
 
 @Composable
 fun App() {

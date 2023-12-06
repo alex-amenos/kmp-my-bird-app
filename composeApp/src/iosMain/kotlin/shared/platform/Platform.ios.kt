@@ -1,6 +1,6 @@
 package shared.platform
 
-import core.common.WHITE_SPACE
+import infrastructure.core.common.WHITE_SPACE
 import platform.Foundation.NSBundle
 import platform.UIKit.UIDevice
 

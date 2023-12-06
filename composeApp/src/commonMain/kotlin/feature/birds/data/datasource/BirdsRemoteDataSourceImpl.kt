@@ -17,6 +17,6 @@ internal class BirdsRemoteDataSourceImpl(
             .also { httpClient.close() }
 
     companion object {
-        private const val BIRDS_IMAGE_URL = "https://sebi.io/demo-image-api/pictures.json"
+        private const val BIRDS_IMAGE_URL = "https://alex-amenos.github.io/kmp-my-bird-app/docs/api/birds.json"
     }
 }

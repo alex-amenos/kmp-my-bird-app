@@ -1,23 +1,21 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.mockmp)
 }
 
 kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = AppConfig.JVM_TARGET
+                jvmTarget = "11"
             }
         }
     }
-
-    jvm("desktop")
 
     listOf(
         iosX64(),
@@ -31,19 +29,12 @@ kotlin {
     }
 
     sourceSets {
-        val desktopMain by getting
-
         androidMain.dependencies {
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.napier)
-        }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
-            implementation(libs.ktor.client.okhttp)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -61,6 +52,13 @@ kotlin {
             implementation(libs.moko.mvvm.core)
             implementation(libs.moko.mvvm.compose)
             implementation(libs.napier)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotest.framework.engine)
+            implementation(libs.kotest.assertions.core)
+            implementation(libs.kotest.property)
+            implementation(libs.turbine)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }
@@ -100,22 +98,25 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = AppConfig.JAVA_VERSION
-        targetCompatibility = AppConfig.JAVA_VERSION
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
 }
 
-compose.desktop {
-    application {
-        mainClass = "MainKt"
+mockmp {
+    usesHelper = true
+    installWorkaround()
+}
 
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = AppConfig.PACKAGE_NAME
-            packageVersion = AppConfig.VERSION_NAME
+afterEvaluate {
+    tasks.withType<AbstractTestTask> {
+        testLogging {
+            events("passed", "skipped", "failed", "standard_out", "standard_error")
+            showExceptions = true
+            showStackTraces = true
         }
     }
 }
@@ -125,10 +126,8 @@ object AppConfig {
     private const val MINOR = 1
     private const val BUILD = 0
 
-    const val JVM_TARGET = "11"
     const val PACKAGE_NAME = "com.jetbrains.mybirdapp"
     const val VERSION_NAME = "$MAJOR.$MINOR.$BUILD"
-    val JAVA_VERSION = JavaVersion.VERSION_11
     val VERSION_BUILD_NUMBER: Int = "${MAJOR}${MINOR.format()}${BUILD.format()}".toInt()
 
     private fun Int.format() = "%03d".format(this)

@@ -1,11 +1,12 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.mockmp)
+    alias(libs.plugins.kotest)
 }
 
 kotlin {
@@ -25,6 +26,14 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "SharedKmp"
             isStatic = true
+        }
+    }
+
+    targets.all {
+        compilations.all {
+            kotlinOptions {
+                verbose = true
+            }
         }
     }
 

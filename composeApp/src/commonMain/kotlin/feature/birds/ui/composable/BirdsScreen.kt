@@ -118,7 +118,7 @@ private fun BirdsPage(
                 ) {
                     items(
                         items = uiState.selectedImages,
-                        key = { bird: Bird -> bird.id },
+                        key = { bird: Bird -> bird.hashCode() },
                     ) { bird: Bird ->
                         BirdImageCell(bird)
                     }

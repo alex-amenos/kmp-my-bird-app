@@ -37,7 +37,6 @@ internal class BirdsRepositoryImpl(
 }
 
 private fun BirdImage.mapToBird() = Bird(
-    id = this.hashCode(),
     author = author,
     category = category,
     path = path,

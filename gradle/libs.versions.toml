@@ -10,8 +10,11 @@ kamel = "0.8.3"
 kotlin = "1.9.20"
 kotlinx-coroutines = "1.7.3"
 ktor = "2.3.6"
+kotest = "5.8.0"
+mockmp = "1.16.0"
 moko-mvvm = "0.16.1"
 napier = "2.6.1"
+turbine = "1.0.0"
 
 [libraries]
 # Android
@@ -50,16 +53,24 @@ moko-mvvm-core = { module = "dev.icerock.moko:mvvm-core", version.ref = "moko-mv
 moko-mvvm-compose = { module = "dev.icerock.moko:mvvm-compose", version.ref = "moko-mvvm" }
 
 # Testing
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+#junit = { group = "junit", name = "junit", version.ref = "junit" }
+#kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+#kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
+mockmp = { id = "org.kodein.mock.mockmp", version.ref = "mockmp" }
 
 [bundles]
 ktor-common = [

@@ -5,30 +5,26 @@ import feature.birds.data.datasource.BirdsRemoteDataSource
 import feature.birds.data.datasource.MockBirdsRemoteDataSource
 import feature.birds.data.model.BirdImage
 import feature.birds.data.model.GetBirdsError
+import feature.birds.ui.model.Bird
 import infrastructure.core.data.datasource.DataException
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.core.test.testCoroutineScheduler
 import io.kotest.matchers.shouldBe
 import io.ktor.http.parsing.ParseException
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
 import org.kodein.mock.Mocker
 import org.kodein.mock.UsesMocks
 
-@OptIn(ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 @UsesMocks(BirdsRemoteDataSource::class)
-internal class BirdsRepositoryUnitTest : FunSpec() {
+private class BirdsRepositoryUnitTest : FunSpec() {
     init {
         coroutineTestScope = true
         val mocker = Mocker()
 
         context("GIVEN a birds repository") {
-            val standardTestDispatcher = StandardTestDispatcher(testCoroutineScheduler)
             val birdsRemoteDataSourceMock: BirdsRemoteDataSource = MockBirdsRemoteDataSource(mocker)
-            val repository = BirdsRepositoryImpl(birdsRemoteDataSourceMock, standardTestDispatcher)
+            val repository = BirdsRepositoryImpl(birdsRemoteDataSourceMock)
 
             test("WHEN get birds succeeds THEN result should be a list of birds") {
-                mocker.everySuspending { birdsRemoteDataSourceMock.getBirdImages() } returns listOf(birdOne, birdTwo)
+                mocker.everySuspending { birdsRemoteDataSourceMock.getBirdImages() } returns listOf(birdImageOne, birdImageTwo)
 
                 repository.getBirds() shouldBe listOf(birdOne, birdTwo).right()
 
@@ -60,15 +56,31 @@ internal class BirdsRepositoryUnitTest : FunSpec() {
     }
 
     companion object {
-        val birdOne = BirdImage(
-            author = "author1",
-            category = "category1",
-            path = "path1",
+        private const val AUTHOR_ONE = "author1"
+        private const val AUTHOR_TWO = "author2"
+        private const val CATEGORY_ONE = "category1"
+        private const val CATEGORY_TWO = "category2"
+        private const val PATH_ONE = "path1"
+        private const val PATH_TWO = "path2"
+        private val birdImageOne = BirdImage(
+            author = AUTHOR_ONE,
+            category = CATEGORY_ONE,
+            path = PATH_ONE,
         )
-        val birdTwo = BirdImage(
-            author = "author2",
-            category = "category2",
-            path = "path2",
+        private val birdImageTwo = BirdImage(
+            author = AUTHOR_TWO,
+            category = CATEGORY_TWO,
+            path = PATH_TWO,
+        )
+        private val birdOne = Bird(
+            author = AUTHOR_ONE,
+            category = CATEGORY_ONE,
+            path = PATH_ONE,
+        )
+        private val birdTwo = Bird(
+            author = AUTHOR_TWO,
+            category = CATEGORY_TWO,
+            path = PATH_TWO,
         )
     }
 }

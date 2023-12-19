@@ -3,7 +3,6 @@ package feature.birds.ui.model
 import infrastructure.core.common.WHITE_SPACE
 
 internal data class Bird(
-    val id: Int,
     val author: String,
     val category: String,
     val path: String,

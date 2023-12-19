@@ -26,6 +26,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "SharedKmp"
             isStatic = true
+            freeCompilerArgs += "-Xbinary=bundleId=${AppConfig.BUNDLE_ID}"
         }
     }
 
@@ -130,11 +131,16 @@ afterEvaluate {
     }
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 object AppConfig {
     private const val MAJOR = 1
     private const val MINOR = 1
     private const val BUILD = 0
 
+    const val BUNDLE_ID = "com.jetbrains.mybirdapp.MyBirdApp"
     const val PACKAGE_NAME = "com.jetbrains.mybirdapp"
     const val VERSION_NAME = "$MAJOR.$MINOR.$BUILD"
     val VERSION_BUILD_NUMBER: Int = "${MAJOR}${MINOR.format()}${BUILD.format()}".toInt()
